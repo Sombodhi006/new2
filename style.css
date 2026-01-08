@@ -1,0 +1,120 @@
+:root {
+    --box-color: #00d2ff;
+    --box-dark: #3a7bd5;
+    --accent: #ff0077;
+    --letter-bg: #ffffff;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, #2c3e50, #000000);
+    overflow: hidden;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.scene {
+    perspective: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.box-container {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    transform-style: preserve-3d;
+    transform: rotateX(-20deg) rotateY(25deg);
+    transition: transform 1s ease;
+    cursor: pointer;
+}
+
+/* Base Side Style */
+.box-side {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: var(--box-color);
+    border: 2px solid rgba(255,255,255,0.2);
+    opacity: 0.9;
+    transition: transform 0.8s ease;
+}
+
+.front  { transform: translateZ(100px); background: var(--box-color); }
+.back   { transform: rotateY(180deg) translateZ(100px); background: var(--box-dark); }
+.left   { transform: rotateY(-90deg) translateZ(100px); background: var(--box-dark); }
+.right  { transform: rotateY(90deg) translateZ(100px); background: var(--box-dark); }
+.box-bottom { 
+    position: absolute; 
+    width: 200px; height: 200px; 
+    background: #111; 
+    transform: rotateX(-90deg) translateZ(100px); 
+}
+
+/* The Lid */
+.box-lid {
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    background: var(--accent);
+    top: -10px;
+    left: -10px;
+    transform: rotateX(90deg) translateZ(110px);
+    transition: transform 0.8s ease, opacity 0.5s;
+    z-index: 10;
+    box-shadow: 0 0 20px var(--accent);
+}
+
+/* The Letter (hidden inside) */
+.letter {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 180px;
+    height: 180px;
+    background: var(--letter-bg);
+    transform: translateZ(0px); /* Stays deep inside the box */
+    transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 1;
+    display: flex;
+    padding: 15px;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+.letter-inner h1 { font-family: 'Serif'; font-size: 22px; color: var(--accent); margin: 0; }
+.letter-inner p { font-size: 11px; color: #333; line-height: 1.4; }
+.letter-inner b { color: var(--box-dark); }
+.sig { text-align: right; font-family: 'Dancing Script'; font-size: 18px; margin-top: 5px; }
+
+/* OPEN STATE ANIMATIONS */
+.box-container.open {
+    transform: rotateX(0deg) rotateY(0deg) translateY(100px);
+}
+
+.box-container.open .box-lid {
+    transform: rotateX(90deg) translateZ(400px); /* Lid flies away */
+    opacity: 0;
+}
+
+.box-container.open .front { transform: rotateX(-90deg) translateZ(100px); }
+.box-container.open .back  { transform: rotateX(90deg) translateZ(100px); }
+.box-container.open .left  { transform: rotateY(-90deg) rotateX(-90deg) translateZ(100px); }
+.box-container.open .right { transform: rotateY(90deg) rotateX(-90deg) translateZ(100px); }
+
+.box-container.open .letter {
+    transform: translateZ(150px) translateY(-150px) scale(1.5); /* Pops out toward screen */
+}
+
+.status-text {
+    margin-top: 50px;
+    color: white;
+    letter-spacing: 3px;
+    font-size: 14px;
+    font-weight: 800;
+    text-shadow: 0 0 10px var(--box-color);
+}
